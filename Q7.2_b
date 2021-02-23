@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+
+L = (4, 8, 5, 9, 6, 7)
+
+def index_to_coord(index, L):
+    n = len(L)
+    X = [0 for i in range(n)]
+    ans = 0
+    for k in range(n-1, -1, -1):
+        ans = 0
+        for j in range(k, n-1):
+            mul = 1
+            for i in range(j+1):
+                mul *= L[i]
+            ans += X[j+1]*mul
+        mul = 1
+        for i in range(k):
+            mul *= L[i]
+        X[k] = ((index-ans)//mul)[0]
+    return X
+
+def coord_to_index(X, L):
+    index = 0
+    for j in range(len(X)):
+        mul = 1
+        for i in range(j):
+            mul *= L[i]
+        index += X[j]*mul
+    return index
+
+indexes = pd.read_csv('input_index_7_2.txt', delim_whitespace=True)
+indexes = np.array(indexes)
+X = []
+for index in indexes:
+    X.append(index_to_coord(index, L))
+
+index = pd.DataFrame(X, columns = ["x1", "x2", "x3", "x4", "x5", "x6"])
+index.to_csv('./output_coordinates_7_2.txt', index=None, sep = ' ')
