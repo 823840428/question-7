@@ -1,0 +1,22 @@
+import pandas as pd
+import numpy as np
+
+L1, L2 = 50, 57
+def index_to_coord(index, L1, L2):
+    x2 = index//L1
+    x1 = index-x2*L1
+    return [x1[0], x2[0]]
+
+def coord_to_index(x1, x2, L1, L2):
+    index = x2*L1+x1
+    return index
+
+indexes = pd.read_csv('input_index_7_1.txt', delim_whitespace=True)
+indexes = np.array(indexes)
+
+ans = []
+for index in indexes:
+    ans.append(index_to_coord(index,L1,L2))
+
+ans = pd.DataFrame(ans, columns = ["x1", "x2"])
+ans.to_csv('./output_coordinates_7_1.txt', index=None, sep = ' ')
